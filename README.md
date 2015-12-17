@@ -1,6 +1,13 @@
 # Network_functional_Roles_manuscript
 
-Data and code
+Data for Coux et al (submitted) 
+- interactions.csv : table with weighted pollinator-plant interactions by site
+- plant_abundances_csv: a site x species binary abundance matrix
+- pollinator_abundances.csv: a site X species quatitatibe abundace matrix
+- plant_traits: a plant_species x plant_traits matrix
+- pollinator_traits: a pollinator_species x pollinator_traits matrix
+- data_metainfo.docx: tables with species list and further information about traits.
+
 
 
 
