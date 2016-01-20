@@ -6,34 +6,33 @@
 # individuals from a same species carrying pollen of 1 plant. 
 #################################################################################
 
-library(FD)
 library(ESM)
 library(bipartite)
 library(magrittr)
 
-source("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/code/nearest_neighbors_func.R")
+source("nearest_neighbors_func.R")
 
 ### 1. Import data:
 ### ###############
 
 ## pollinator traits
-t3 <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/pollinator_traits.csv", sep=",", header=T, row.names = 1 )
+t3 <- read.table("pollinator_traits.csv", sep=",", header=T, row.names = 1 )
 
 # assign pollinator trait weights
 weight <- c(0.5, 0.5,1,0.5,0.5,1, rep(1/6, 6), rep(1,3))
 
 ## plant traits
-pl_t <-  read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/plant_traits.csv", sep=",", header=T, row.names = 1 )
+pl_t <-  read.table("plant_traits.csv", sep=",", header=T, row.names = 1 )
 
 # assign plant trait weights
 pl.weight <- c(rep(1, 8), rep(0.25, 4), rep(1, 3))
 
 ## import abudances
-a2 <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/pollinator_abundances.csv", sep=",", header=T, row.names = 1 )
+a2 <- read.table("pollinator_abundances.csv", sep=",", header=T, row.names = 1 )
 a <- as.matrix(a2)
 a[which(a>0)] <- 1
 
-p <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/plant_abundances_bin.csv", sep=",", header=T, row.names = 1 )
+p <- read.table("plant_abundances_bin.csv", sep=",", header=T, row.names = 1 )
 
 # outlier check (methods from the R Book, Crawley M.J., 2007, p363)
 leverage<-function(x){1/length(x)+(x-mean(x))^2/sum((x-mean(x))^2)}
@@ -59,8 +58,8 @@ a2[1,"L_sordidum"] <- 0
 
 
 ## arranging interactions into a list adjacency matrices (one for each site)
-interactions <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/interactions.csv", sep=",", header=T, row.names = 1 )
-read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/interactions.csv", sep=",", header=T, row.names = 1 ) %>%
+interactions <- read.table("interactions.csv", sep=",", header=T, row.names = 1 )
+interactions %>%
   split(., .$Site) %>%
   lapply(., function(x){
     net <- matrix(x$Links, nrow=length(unique(x$Pol_sp)), ncol=length(unique(x$Plant_sp)))

@@ -13,7 +13,7 @@
 require(nlme)
 require(MuMIn)
 
-source("main_reviews_n.insect.R")
+source("main_FD_ntw_calc_revised.R")
 
 
 sizes <- lapply(ntw, length)
@@ -70,14 +70,6 @@ mumin.proc(uniq.ND)
 summary(uniq.hs<-lme(pol.hs ~  uniq* size + uniq*abundance, random=~1|farm, na.action=na.fail, data=pol.rev, method="REML"))
 mumin.proc(uniq.hs)
 
-
-
-# just wondering about this since the beginning...
-summary(red.worig.nd<-lme(normalised.degree ~  (uniq +w.orig+size+abundance)^2, random=~1|farm, na.action=na.fail, data=pol.rev, method="REML"))
-mumin.proc(red.worig.nd)
-
-summary(red.worig.nd<-lme(normalised.degree ~  (uniq +orig+size+abundance)^2, random=~1|farm, na.action=na.fail, data=pol.rev, method="REML"))
-mumin.proc(red.worig.nd)
 
 
 

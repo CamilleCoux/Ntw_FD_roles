@@ -15,7 +15,7 @@
 ################################################################################
 ################################################################################
 
-
+library(FD)
 
 # The coordinates are calculated for the whole community, it's the centroid
 # that's going to change coordinates. And then I'll just need to adapt the nearest 
