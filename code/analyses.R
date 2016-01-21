@@ -61,6 +61,8 @@ mumin.proc(pol.bin.orig.hs)
 # weighted
 summary(pol.W.orig.hs<-lme( pol.hs ~  w.orig* size + abundance*w.orig, random=~1|farm, na.action=na.fail, data=pol.rev, method="REML"))
 mumin.proc(pol.W.orig.hs)
+summary(pol.W.orig.hs<-lme( pol.hs ~ abundance*w.orig, random=~1|farm, na.action=na.fail, data=pol.rev, method="REML"))
+
 
 # UNIQUENESS (nearest neighbour) - ND
 summary(uniq.ND<-lme(normalised.degree ~  uniq* size + uniq*abundance, random=~1|farm, na.action=na.fail, data=pol.rev, method="REML"))

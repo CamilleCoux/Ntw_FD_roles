@@ -10,29 +10,29 @@ library(ESM)
 library(bipartite)
 library(magrittr)
 
-source("nearest_neighbors_func.R")
+source("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/code/nearest_neighbors_func.R")
 
 ### 1. Import data:
 ### ###############
 
 ## pollinator traits
-t3 <- read.table("pollinator_traits.csv", sep=",", header=T, row.names = 1 )
+t3 <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/pollinator_traits.csv", sep=",", header=T, row.names = 1 )
 
 # assign pollinator trait weights
 weight <- c(0.5, 0.5,1,0.5,0.5,1, rep(1/6, 6), rep(1,3))
 
 ## plant traits
-pl_t <-  read.table("plant_traits.csv", sep=",", header=T, row.names = 1 )
+pl_t <-  read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/plant_traits.csv", sep=",", header=T, row.names = 1 )
 
 # assign plant trait weights
 pl.weight <- c(rep(1, 8), rep(0.25, 4), rep(1, 3))
 
 ## import abudances
-a2 <- read.table("pollinator_abundances.csv", sep=",", header=T, row.names = 1 )
+a2 <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/pollinator_abundances.csv", sep=",", header=T, row.names = 1 )
 a <- as.matrix(a2)
 a[which(a>0)] <- 1
 
-p <- read.table("plant_abundances_bin.csv", sep=",", header=T, row.names = 1 )
+p <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/plant_abundances_bin.csv", sep=",", header=T, row.names = 1 )
 
 # outlier check (methods from the R Book, Crawley M.J., 2007, p363)
 leverage<-function(x){1/length(x)+(x-mean(x))^2/sum((x-mean(x))^2)}
@@ -54,20 +54,19 @@ abline(((2*P)/N),0,lty=2)
 # the 
 # abundance of this outlier and presented in Appendix 3.
 
-a2[1,"L_sordidum"] <- 0
+# a2[1,"L_sordidum"] <- 0
 
 
 ## arranging interactions into a list adjacency matrices (one for each site)
-interactions <- read.table("interactions.csv", sep=",", header=T, row.names = 1 )
-interactions %>%
+interactions <- read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/interactions.csv", sep=",", header=T, row.names = 1 )
+read.table("C:/Users/camille/Desktop/Network_functional_Roles_manuscript/data/interactions.csv", sep=",", header=T, row.names = 1 ) %>%
   split(., .$Site) %>%
   lapply(., function(x){
     net <- matrix(x$Links, nrow=length(unique(x$Pol_sp)), ncol=length(unique(x$Plant_sp)))
     colnames(net)<- unique(x$Plant_sp)
     rownames(net) <- unique(x$Pol_sp)
     return(net)
-    }) -> ntw
-
+  }) -> ntw
 
 
 # calculating FD outputs
@@ -111,10 +110,12 @@ ntw %>%
   do.call(rbind, .) -> splvl.plants
 
 # removing the lassor outlier from spslevel but keeping line in 
-splvl.pollis[4,] <- NA
-pol.hs[4] <- NA
-pol.measures <- rbind(pol.measures[1:3,], c(NA, NA, NA), pol.measures[4:89,])
-w.pol.measures <- rbind(w.pol.measures[1:3,], c(NA, NA, NA), w.pol.measures[4:89,])
+if (a2[1,"L_sordidum"] == 0){   
+  splvl.pollis[4,] <- NA
+  pol.hs[4] <- NA
+  pol.measures <- rbind(pol.measures[1:3,], c(NA, NA, NA), pol.measures[4:89,])
+  w.pol.measures <- rbind(w.pol.measures[1:3,], c(NA, NA, NA), w.pol.measures[4:89,])
+}
 
 # combine data
 pol.rev <- cbind(pol.measures, w.pol.measures, splvl.pollis, pol.hs)
